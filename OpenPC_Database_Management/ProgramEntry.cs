@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace OpenPC_Database_Management
 {
-    static class Program
+    static class ProgramEntry
     {
         /// <summary>
         /// The main entry point for the application.
@@ -16,7 +16,7 @@ namespace OpenPC_Database_Management
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new DatabaseManagement());
         }
     }
 }

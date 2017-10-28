@@ -9,6 +9,6 @@ namespace OpenPC_Database_Management
     class ProcessorInfo:BaseClass
     {
         string Name { get; set; }
-        ProcessorCategory Category { get; set; }
+        string Category { get; set; }
     }
 }

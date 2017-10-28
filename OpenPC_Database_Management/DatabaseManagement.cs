@@ -12,19 +12,74 @@ namespace OpenPC_Database_Management
 {
     public partial class DatabaseManagement : Form
     {
+        private ContextMenu treeRightClick = new ContextMenu();
+
         public DatabaseManagement()
         {
             InitializeComponent();
-        }
+            //Implement add and delete buttons when right click on treeview nodes
+            treeRightClick.MenuItems.Add("Add");
+            treeRightClick.MenuItems.Add("Delete");
+            foreach (MenuItem item in treeRightClick.MenuItems)
+            {
+                if (item.Text == "Add")
+                    item.Click += new EventHandler(RightClickAdd_Click);
+                else
+                    item.Click += new EventHandler(RightClickDelete_Click);
+            }
 
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+            //treeRightClick.MenuItems["Add"].Click += new EventHandler(RightClickAdd_Click);
+            //treeRightClick.MenuItems["Delete"].Click += new EventHandler(RightClickDelete_Click);
+        }
+                
+        private void SQLTreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
 
         }
 
         private void GenerateTreeFromDB()
         {
-            treeView1.
+            SQLTreeView.Nodes.Add("School");
+            for (int i = 0; i < 5; i++)
+                SQLTreeView.Nodes[0].Nodes.Add("Building" + i.ToString());
+            for (int j = 0; j < SQLTreeView.Nodes[0].Nodes.Count; j++)
+            {
+                for (int k = 0; k < 5; k++)
+                {
+                    SQLTreeView.Nodes[0].Nodes[j].Nodes.Add("Room" + k.ToString());
+                }
+            }
+        }
+
+        private void DatabaseManagement_Load(object sender, EventArgs e)
+        {
+            GenerateTreeFromDB();
+        }
+
+        private void SQLTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            SQLTreeView.SelectedNode = e.Node;
+            if (e.Button == MouseButtons.Right)
+            {
+                SQLTreeView.ContextMenu = treeRightClick;
+            }
+        }
+
+        private void RightClickAdd_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("You clicked \"Add\" option");
+            SQLTreeView.SelectedNode.Nodes.Add("test");
+            if (SQLTreeView.SelectedNode.Nodes.Count > 0 && !SQLTreeView.SelectedNode.IsExpanded)
+                SQLTreeView.SelectedNode.Expand();
+        }
+
+        private void RightClickDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult result =  MessageBox.Show($"You wish to delete \"{SQLTreeView.SelectedNode.Text}\" and all of its child nodes?", "Confirmation", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                SQLTreeView.SelectedNode.Remove();
+            }
         }
     }
 }

@@ -13,8 +13,8 @@ namespace OpenPC_Database_Management
         int MemorySize { get; set; }
         bool PrintAvailable { get; set; }
         ProcessorInfo Processor { get; set; }
-        List<Application> Apps { get; set; }
-        List<Feature> Features { get; set; }
+        List<App> Apps { get; set; }
+        List<string> Features { get; set; }
         OS OperatingSystem { get; set; }
     }
 }

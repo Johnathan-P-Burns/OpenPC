@@ -9,7 +9,7 @@ namespace OpenPC_Database_Management
     public class School
     {
         public School() { }
-        public string SchoolName { get; set; }
+        public string Name { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public List<Building> Buildings { get; set; }

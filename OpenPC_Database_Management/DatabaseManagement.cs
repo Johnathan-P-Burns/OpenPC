@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Team Medjed
+//Johnathan Burns, Ethan Spangler, Michael Xie
+//Volhacks 2017
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -66,15 +70,15 @@ namespace OpenPC_Database_Management
                 {
                     for (int j = 0; j < school.Buildings[i].Rooms.Count; j++)
                     {
-                        SQLTreeView.Nodes[0].Nodes[j].Nodes.Add(new TreeNode() { Text = school.Buildings[i].Rooms[j].Name, Tag = school.Buildings[i].Rooms[j] });
+                        SQLTreeView.Nodes[0].Nodes[i].Nodes.Add(new TreeNode() { Text = school.Buildings[i].Rooms[j].Name, Tag = school.Buildings[i].Rooms[j] });
                         if (school.Buildings[i].Rooms[j].Computers != null && school.Buildings[i].Rooms[j].Computers.Count > 0)
                         {
-                            for (int k = 0; k< school.Buildings[i].Rooms[j].Computers.Count; k++)
+                            for (int k = 0; k < school.Buildings[i].Rooms[j].Computers.Count; k++)
                             {
-                                SQLTreeView.Nodes[0].Nodes[j].Nodes[k].Nodes.Add(new TreeNode { Text = school.Buildings[i].Rooms[j].Computers[k].Name, Tag = school.Buildings[i].Rooms[j].Computers[k] });
+                                SQLTreeView.Nodes[0].Nodes[i].Nodes[j].Nodes.Add(new TreeNode { Text = school.Buildings[i].Rooms[j].Computers[k].Name, Tag = school.Buildings[i].Rooms[j].Computers[k] });
                             }
                         }
-                    } 
+                    }
                 }
             }
         }
@@ -233,7 +237,7 @@ namespace OpenPC_Database_Management
                 {
                     ID = Convert.ToInt32(dataArr[0]),
                     Name = dataArr[2].Trim('\"'),
-                    Floor = Convert.ToInt32(dataArr[3].Trim('\"')),
+                    Floor = string.IsNullOrWhiteSpace(dataArr[3].Trim('\"'))? -1:Convert.ToInt32(dataArr[3].Trim('\"')),
                     Computers = ParseComputerDataForARoom(Convert.ToInt32(dataArr[0]))
                 });
             }

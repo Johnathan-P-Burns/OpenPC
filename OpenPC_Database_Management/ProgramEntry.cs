@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Team Medjed
+//Johnathan Burns, Ethan Spangler, Michael Xie
+//Volhacks 2017
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

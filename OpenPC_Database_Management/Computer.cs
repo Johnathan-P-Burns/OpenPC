@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace OpenPC_Database_Management
 {
-    class Computer
+    public class Computer
     {
-        string ID { get; set; }
-        string Name { get; set; }
-        int MemorySize { get; set; }
-        bool PrintAvailable { get; set; }
-        ProcessorInfo Processor { get; set; }
-        List<App> Apps { get; set; }
-        List<string> Features { get; set; }
-        OS OperatingSystem { get; set; }
+        public Computer() { }
+        public string ID { get; set; }
+        public string Name { get; set; }
+        public int MemorySize { get; set; }
+        public bool PrintAvailable { get; set; }
+        public ProcessorInfo Processor { get; set; }
+        public List<App> Apps { get; set; }
+        public List<string> Features { get; set; }
+        public OS OperatingSystem { get; set; }
     }
 }

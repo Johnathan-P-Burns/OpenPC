@@ -13,6 +13,13 @@ namespace OpenPC_Database_Management
     public partial class DatabaseManagement : Form
     {
         private ContextMenu treeRightClick = new ContextMenu();
+        private Building testbuilding = new Building()
+        {
+            Longitude = 1.0,
+            Latitude = 1.0,
+            Name = "MinKao",
+            ID = 123
+        };
 
         public DatabaseManagement()
         {
@@ -63,12 +70,16 @@ namespace OpenPC_Database_Management
             {
                 SQLTreeView.ContextMenu = treeRightClick;
             }
+            else if(e.Button == MouseButtons.Left)
+            {
+                //Display Info about selected node
+            }
         }
 
         private void RightClickAdd_Click(object sender, EventArgs e)
         {
             MessageBox.Show("You clicked \"Add\" option");
-            SQLTreeView.SelectedNode.Nodes.Add("test");
+            SQLTreeView.SelectedNode.Nodes.Add(new TreeNode() { Text = "test", Tag = (object)testbuilding});
             if (SQLTreeView.SelectedNode.Nodes.Count > 0 && !SQLTreeView.SelectedNode.IsExpanded)
                 SQLTreeView.SelectedNode.Expand();
         }

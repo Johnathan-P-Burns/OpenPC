@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace OpenPC_Database_Management
 {
-    class App:BaseClass
+    public class App:BaseClass
     {
-        string Name { get; set; }
-        string Category { get; set; }
+        public App() { }
+        public string Name { get; set; }
+        public string Category { get; set; }
     }
 }

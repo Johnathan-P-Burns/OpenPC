@@ -35,7 +35,7 @@
             // 
             this.SQLTreeView.Location = new System.Drawing.Point(12, 12);
             this.SQLTreeView.Name = "SQLTreeView";
-            this.SQLTreeView.Size = new System.Drawing.Size(449, 472);
+            this.SQLTreeView.Size = new System.Drawing.Size(449, 570);
             this.SQLTreeView.TabIndex = 0;
             this.SQLTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SQLTreeView_AfterSelect);
             this.SQLTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.SQLTreeView_NodeMouseClick);
@@ -44,7 +44,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(822, 496);
+            this.ClientSize = new System.Drawing.Size(849, 594);
             this.Controls.Add(this.SQLTreeView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;

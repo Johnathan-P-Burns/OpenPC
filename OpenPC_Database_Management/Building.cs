@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace OpenPC_Database_Management
 {
-    class Building:BaseClass
+    public class Building :BaseClass
     {
-        string Name { get; set; }
-        double Latitude { get; set; }
-        double Longitude { get; set; }
-        List<Room> Rooms { get; set;}
+        public Building() { }
+        public string Name { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public List<Room> Rooms { get; set;}
     }
 }

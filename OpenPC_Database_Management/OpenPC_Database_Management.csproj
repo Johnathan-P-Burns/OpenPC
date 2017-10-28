@@ -71,14 +71,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppCategory.cs" />
+    <Compile Include="Application.cs" />
+    <Compile Include="Building.cs" />
+    <Compile Include="Computer.cs" />
     <Compile Include="DatabaseManagement.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DatabaseManagement.Designer.cs">
       <DependentUpon>DatabaseManagement.cs</DependentUpon>
     </Compile>
+    <Compile Include="Feature.cs" />
+    <Compile Include="ID.cs" />
+    <Compile Include="OS.cs" />
+    <Compile Include="OSCategory.cs" />
+    <Compile Include="ProcessorInfo.cs" />
+    <Compile Include="ProcessorCategory.cs" />
     <Compile Include="ProgramEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Room.cs" />
+    <Compile Include="School.cs" />
     <EmbeddedResource Include="DatabaseManagement.resx">
       <DependentUpon>DatabaseManagement.cs</DependentUpon>
     </EmbeddedResource>

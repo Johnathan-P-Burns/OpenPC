@@ -16,5 +16,15 @@ namespace OpenPC_Database_Management
         {
             InitializeComponent();
         }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
+        private void GenerateTreeFromDB()
+        {
+            treeView1.
+        }
     }
 }

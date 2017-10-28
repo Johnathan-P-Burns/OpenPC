@@ -36,7 +36,7 @@
             // 
             this.SQLTreeView.Location = new System.Drawing.Point(12, 12);
             this.SQLTreeView.Name = "SQLTreeView";
-            this.SQLTreeView.Size = new System.Drawing.Size(449, 570);
+            this.SQLTreeView.Size = new System.Drawing.Size(385, 570);
             this.SQLTreeView.TabIndex = 0;
             this.SQLTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SQLTreeView_AfterSelect);
             this.SQLTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.SQLTreeView_NodeMouseClick);
@@ -45,7 +45,7 @@
             // 
             this.InfoLabel.AutoSize = true;
             this.InfoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.InfoLabel.Location = new System.Drawing.Point(519, 128);
+            this.InfoLabel.Location = new System.Drawing.Point(470, 120);
             this.InfoLabel.Name = "InfoLabel";
             this.InfoLabel.Size = new System.Drawing.Size(0, 25);
             this.InfoLabel.TabIndex = 1;
@@ -54,7 +54,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(849, 594);
+            this.ClientSize = new System.Drawing.Size(938, 594);
             this.Controls.Add(this.InfoLabel);
             this.Controls.Add(this.SQLTreeView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

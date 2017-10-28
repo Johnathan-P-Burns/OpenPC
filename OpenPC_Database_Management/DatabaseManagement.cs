@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace OpenPC_Database_Management
 {
@@ -14,6 +16,8 @@ namespace OpenPC_Database_Management
     {
         Dictionary<int, string> hierarchy = new Dictionary<int, string>();
         private ContextMenu treeRightClick = new ContextMenu();
+        private readonly WebClient client = new WebClient();
+        const string baseAddress = @"http://ec2-54-86-220-26.compute-1.amazonaws.com/?query=";
 
         public DatabaseManagement()
         {
@@ -52,14 +56,25 @@ namespace OpenPC_Database_Management
 
         private void GenerateTreeFromDB()
         {
-            SQLTreeView.Nodes.Add(new TreeNode() { Text = "UTK", Tag = new School() { Name = "UTK", Longitude = 1, Latitude = 1} });
-            for (int i = 0; i < 5; i++)
-                SQLTreeView.Nodes[0].Nodes.Add(new TreeNode() { Text = "Building" + i.ToString(), Tag = new Building() { Name = "Building" + i.ToString(), Longitude = 1 + i, Latitude = 1 + i } });
-            for (int j = 0; j < SQLTreeView.Nodes[0].Nodes.Count; j++)
+            School school = ParseSchoolData();
+            SQLTreeView.Nodes.Add(new TreeNode() { Text = school.Name, Tag = school });
+
+            for (int i = 0; i < school.Buildings.Count; i++)
             {
-                for (int k = 0; k < 5; k++)
+                SQLTreeView.Nodes[0].Nodes.Add(new TreeNode() { Text = school.Buildings[i].Name, Tag = school.Buildings[i] });
+                if (school.Buildings[i].Rooms!= null && school.Buildings[i].Rooms.Count > 0)
                 {
-                    SQLTreeView.Nodes[0].Nodes[j].Nodes.Add(new TreeNode() { Text = "Room" + k.ToString(), Tag = new Room() { Name = "Room" + k.ToString(), Floor = 1 + k} });
+                    for (int j = 0; j < school.Buildings[i].Rooms.Count; j++)
+                    {
+                        SQLTreeView.Nodes[0].Nodes[j].Nodes.Add(new TreeNode() { Text = school.Buildings[i].Rooms[j].Name, Tag = school.Buildings[i].Rooms[j] });
+                        if (school.Buildings[i].Rooms[j].Computers != null && school.Buildings[i].Rooms[j].Computers.Count > 0)
+                        {
+                            for (int k = 0; k< school.Buildings[i].Rooms[j].Computers.Count; k++)
+                            {
+                                SQLTreeView.Nodes[0].Nodes[j].Nodes[k].Nodes.Add(new TreeNode { Text = school.Buildings[i].Rooms[j].Computers[k].Name, Tag = school.Buildings[i].Rooms[j].Computers[k] });
+                            }
+                        }
+                    } 
                 }
             }
         }
@@ -113,46 +128,136 @@ namespace OpenPC_Database_Management
             {
                 case 0:
                     displayStr += "Node type:\n" +
-                                  "    School Node\n\n" +
+                                  "    School Node\n" +
                                   "Name:\n" +
-                                 $"    {((School)node.Tag).Name}\n\n" +
+                                 $"    {((School)node.Tag).Name}\n" +
                                   "Longitude:\n" +
-                                 $"    {((School)node.Tag).Longitude}\n\n" +
+                                 $"    {((School)node.Tag).Longitude}\n" +
                                   "Latitude:\n" +
-                                 $"    {((School)node.Tag).Latitude}";
+                                 $"    {((School)node.Tag).Latitude}\n" +
+                                  "Site:\n" +
+                                 $"    {((School)node.Tag).Site}";
                     break;
                 case 1:
                     displayStr += "Node type:\n" +
-                                  "    Building Node\n\n" +
+                                  "    Building Node\n" +
                                   "Name:\n" +
-                                 $"    {((Building)node.Tag).Name}\n\n" +
+                                 $"    {((Building)node.Tag).Name}\n" +
+                                  "ID:\n" +
+                                 $"    {((Building)node.Tag).ID}\n" +
                                   "Longitude:\n" +
-                                 $"    {((Building)node.Tag).Longitude.ToString()}\n\n" +
+                                 $"    {((Building)node.Tag).Longitude.ToString()}\n" +
                                   "Latitude:\n" +
                                  $"    {((Building)node.Tag).Latitude.ToString()}";
                     break;
                 case 2:
                     displayStr += "Node type:\n" +
-                                  "    Room Node\n\n" +
+                                  "    Room Node\n" +
                                   "Name:\n" +
-                                 $"    {((Room)node.Tag).Name}\n\n" +
-                                  "Longitude:\n" +
+                                 $"    {((Room)node.Tag).Name}\n" +
+                                  "ID:\n" +
+                                 $"    {((Room)node.Tag).ID}\n" +
+                                  "Floor:\n" +
                                  $"    {((Room)node.Tag).Floor.ToString()}";
                     break;
                 case 3:
                     displayStr += "Node type:\n" +
-                                  "    Computer Node\n\n" +
+                                  "    Computer Node\n" +
                                   "Name:\n" +
-                                 $"    {((School)node.Tag).Name}\n\n" +
-                                  "Longitude:\n" +
-                                 $"    {((School)node.Tag).Longitude}\n\n" +
-                                  "Latitude:\n" +
-                                 $"    {((School)node.Tag).Latitude}\n\n";
+                                 $"    {((Computer)node.Tag).Name}\n" +
+                                  "ID:\n" +
+                                 $"    {((Computer)node.Tag).ID}";
                     break;
                 default:
                     break;
             }
             return displayStr;
+        }
+        
+        private string GetWebContent(string address)
+        {
+            string downloadString = client.DownloadString(address);
+            return downloadString;
+        }
+
+        private School ParseSchoolData()
+        {
+            string webContent = GetWebContent(baseAddress + @"Select%20*FROM%20school");
+            string dataStart = "\"data\":";
+            Match schoolMatch = Regex.Match(webContent.Substring(webContent.IndexOf(dataStart) + dataStart.Length), @"\[([^[\]]*)\]");
+            string[] dataArr = schoolMatch.Value.Trim(']').Trim('[').Split(',');
+            School school = new School()
+            {
+                Name = dataArr[0].Trim('\"'),
+                Latitude = Convert.ToDouble(dataArr[1].Trim('\"')),
+                Longitude = Convert.ToDouble(dataArr[2].Trim('\"')),
+                Site = dataArr[3].Trim('\"'),
+                Buildings = ParseBuildingData()
+            };
+            return school;
+        }
+
+        private List<Building> ParseBuildingData()
+        {
+            List<Building> buildings = new List<Building>();
+            string webContent = GetWebContent(baseAddress + @"Select%20*FROM%20buildings");
+            string dataStart = "\"data\":";
+            MatchCollection buildingMatch = Regex.Matches(webContent.Substring(webContent.IndexOf(dataStart) + dataStart.Length), @"\[([^[\]]*)\]");
+            foreach (Match match in buildingMatch)
+            {
+                string[] dataArr = match.Value.Trim(']').Trim('[').Split(',');
+                buildings.Add(new Building()
+                {
+                    ID = Convert.ToInt32(dataArr[0]),
+                    Name = dataArr[1].Trim('\"'),
+                    Latitude = Convert.ToDouble(dataArr[2].Trim('\"')),
+                    Longitude = Convert.ToDouble(dataArr[3].Trim('\"')),
+                    Rooms = ParseRoomDataForABuilding(Convert.ToInt32(dataArr[0]))
+                });
+            }
+            return buildings;
+        }
+
+        private List<Room> ParseRoomDataForABuilding(int ID)
+        {
+            List<Room> rooms = new List<Room>();
+            string webContent = GetWebContent(baseAddress + @"Select%20*FROM%20rooms" + $"%20WHERE%20room_building_id={ID.ToString()}");
+            string dataStart = "\"data\":";
+            MatchCollection roomMatch = Regex.Matches(webContent.Substring(webContent.IndexOf(dataStart) + dataStart.Length), @"\[([^[\]]*)\]");
+            if (roomMatch == null || roomMatch.Count <= 0)
+                return null;
+            foreach (Match match in roomMatch)
+            {
+                string[] dataArr = match.Value.Trim(']').Trim('[').Split(',');
+                rooms.Add(new Room()
+                {
+                    ID = Convert.ToInt32(dataArr[0]),
+                    Name = dataArr[2].Trim('\"'),
+                    Floor = Convert.ToInt32(dataArr[3].Trim('\"')),
+                    Computers = ParseComputerDataForARoom(Convert.ToInt32(dataArr[0]))
+                });
+            }
+            return rooms;
+        }
+
+        private List<Computer> ParseComputerDataForARoom(int ID)
+        {
+            List<Computer> computers = new List<Computer>();
+            string webContent = GetWebContent(baseAddress + @"Select%20*FROM%20computers" + $"%20WHERE%20computer_room_id={ID.ToString()}");
+            string dataStart = "\"data\":";
+            MatchCollection compMatch = Regex.Matches(webContent.Substring(webContent.IndexOf(dataStart) + dataStart.Length), @"\[([^[\]]*)\]");
+            if (compMatch == null || compMatch.Count <= 0)
+                return null;
+            foreach (Match match in compMatch)
+            {
+                string[] dataArr = match.Value.Trim(']').Trim('[').Split(',');
+                computers.Add(new Computer()
+                {
+                    ID = dataArr[0].Trim('\"'),
+                    Name = dataArr[3].Trim('\"')
+                });
+            }
+            return computers;
         }
     }
 }

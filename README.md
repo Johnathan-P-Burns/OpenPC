@@ -9,6 +9,8 @@ VolHacks 2017
 ---
 This repository contains the code for the OpenPC Database Manager
 
+[Project Website](http://OpenPCProject.com)
+
 This is not the project's only component, and other repositories can be found below.
 
 [OpenPCServer](https://github.com/spanglere/OpenPCServer)

@@ -18,8 +18,8 @@ namespace OpenPC_Database_Management
         public int MemorySize { get; set; }
         public bool PrintAvailable { get; set; }
         public bool InUse { get; set; }
-        public ProcessorInfo Processor { get; set; }
+        public string Processor { get; set; }
         public List<string> Apps { get; set; }
-        public OS OperatingSystem { get; set; }
+        public string OperatingSystem { get; set; }
     }
 }

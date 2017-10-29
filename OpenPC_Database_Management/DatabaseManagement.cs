@@ -170,7 +170,15 @@ namespace OpenPC_Database_Management
                                   "Name:\n" +
                                  $"    {((Computer)node.Tag).Name}\n" +
                                   "ID:\n" +
-                                 $"    {((Computer)node.Tag).ID}";
+                                 $"    {((Computer)node.Tag).ID}\n" +
+                                  "Memory Size(MB):\n" +
+                                 $"    {((Computer)node.Tag).MemorySize.ToString()}\n" +
+                                 "Printer Available:\n" +
+                                $"     {((Computer)node.Tag).PrintAvailable.ToString()}\n" +
+                                 "Processor:\n" +
+                                $"     {((Computer)node.Tag).Processor}\n" +
+                                 "Operating System:\n" +
+                                $"     {((Computer)node.Tag).OperatingSystem}";
                     break;
                 default:
                     break;
@@ -255,13 +263,44 @@ namespace OpenPC_Database_Management
             foreach (Match match in compMatch)
             {
                 string[] dataArr = match.Value.Trim(']').Trim('[').Split(',');
-                computers.Add(new Computer()
+                Computer comp = (new Computer()
                 {
                     ID = dataArr[0].Trim('\"'),
-                    Name = dataArr[3].Trim('\"')
+                    Name = dataArr[3].Trim('\"'),
+                    MemorySize = String.IsNullOrWhiteSpace(dataArr[4].Trim('\"'))? -1 : Convert.ToInt32(dataArr[4].Trim('\"')),
+                    PrintAvailable = (dataArr[6].Trim('\"') == "0") ? false : true
                 });
+                switch (Convert.ToInt32(dataArr[5].Trim('\"')))
+                {
+                    case 1:
+                        comp.Processor = "i3";
+                        break;
+                    case 2:
+                        comp.Processor = "i5";
+                        break;
+                    case 3:
+                        comp.Processor = "i7";
+                        break;
+                }
+
+                switch (Convert.ToInt32(dataArr[2].Trim('\"')))
+                {
+                    case 35:
+                        comp.OperatingSystem = "Windows";
+                        break;
+                    case 36:
+                        comp.OperatingSystem = "Macintosh";
+                        break;
+                    case 37:
+                        comp.OperatingSystem = "Linux";
+                        break;
+                }
+                computers.Add(comp);
             }
             return computers;
         }
+        
+
+        //private List<>
     }
 }

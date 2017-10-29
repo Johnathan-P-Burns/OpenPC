@@ -1,7 +1,9 @@
 # OpenPC
 ---
 Team Medjed
+
 Johnathan Burns, Ethan Spangler, and Michael Xie
+
 VolHacks 2017
 ---
 This repository contains the code for the OpenPC Database Manager
